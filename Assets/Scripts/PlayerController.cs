@@ -8,11 +8,11 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5;
     public Rigidbody2D rb;
     Vector2 movement;
-    
+
     // Start is called before the first frame update
     void Start()
     {
-           
+
     }
 
     // Update is called once per frame
@@ -22,8 +22,16 @@ public class PlayerController : MonoBehaviour
         movement.y = Input.GetAxisRaw("Vertical");
     }
 
-    void FixedUpdate() 
+    void FixedUpdate()
     {
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Enemy")
+        {
+            GameEvents.current.GemDropped(00);
+        }
     }
 }
