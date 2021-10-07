@@ -6,16 +6,18 @@ public class EnemyController : MonoBehaviour
 {
     public int id;
     public Transform goal;
-    public float moveSpeed = 1.5f;
+    public float moveSpeed = 1.4f;
 
     private bool triggered = false;
     private Vector2 movement;
     private Rigidbody2D rigidBody;
+    private BoxCollider2D boxCollider2D;
 
     // Start is called before the first frame update
     void Start()
     {
         rigidBody = this.GetComponent<Rigidbody2D>();
+        boxCollider2D = this.GetComponent<BoxCollider2D>();
         GameEvents.current.onGemColisionEnter += OnGemCollected;
         GameEvents.current.onGemDrop += onGemDropped;
     }
@@ -27,6 +29,9 @@ public class EnemyController : MonoBehaviour
         //rb.rotation = angle;
         direction.Normalize();
         movement = direction;
+
+        rigidBody.isKinematic = !triggered;
+        boxCollider2D.enabled = triggered;
     }
     private void FixedUpdate()
     {
@@ -49,6 +54,15 @@ public class EnemyController : MonoBehaviour
         if (id == this.id)
         {
             triggered = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+        {
+            GameEvents.current.GemDropped(this.id);
+            // TODO :: readjust
         }
     }
 

@@ -29,9 +29,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy")
         {
-            GameEvents.current.GemDropped(00);
+            // TODO :: damage/score/win condition
         }
     }
 }
